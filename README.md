@@ -2,6 +2,8 @@
 
 A Retrieval-Augmented Generation (RAG) system that allows you to upload books and ask questions about them. The system uses vector embeddings to find relevant text chunks and generates answers using an LLM.
 
+There are books located at `uploads/books`, you may upload these via the UI and test
+
 ## Quick Start
 
 ### Prerequisites
