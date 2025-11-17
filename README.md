@@ -135,9 +135,9 @@ Backend configuration can be set via environment variables or defaults are used:
 
 ### Evaluation
 
-Run evaluation on uploaded books:
+run evaluations on the default dataset for the book pride and prejudice locally
 ```bash
-docker exec bowatt2-backend-1 ./bowattAI evaluate [book_id]
+go run main.go evaluate 
 ```
 
 Or locally:
