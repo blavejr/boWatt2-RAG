@@ -1,0 +1,43 @@
+services:
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      MONGO_URI: mongodb://mongodb:27017
+      MONGO_DATABASE: rag_db
+      MONGO_COLLECTION: chunks
+      OLLAMA_URL: http://ollama:11434
+      OLLAMA_EMBEDDING_MODEL: simple
+      OLLAMA_LLM_MODEL: llama3.2:3b
+      PORT: 8080
+      ENVIRONMENT: development
+      CHUNK_SIZE: 500
+      CHUNK_OVERLAP: 50
+      TOP_K: 5
+    depends_on:
+      - mongodb
+      - ollama
+    volumes:
+      - ./uploads:/app/uploads
+      - ./evaluation:/app/evaluation
+
+volumes:
+  mongodb_data:
+  ollama_data:
