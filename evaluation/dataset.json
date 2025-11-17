@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "question": "Who is the main female protagonist?",
+    "ground_truth_answer": "Elizabeth Bennet",
+    "relevant_keywords": ["Elizabeth", "Bennet", "protagonist"],
+    "book_section": "Chapter 1",
+    "notes": "Should identify Elizabeth as the main character"
+  },
+  {
+    "id": 2,
+    "question": "What is Mr. Bennet's attitude toward his wife?",
+    "ground_truth_answer": "He treats her with ironic humor and mild contempt",
+    "relevant_keywords": ["Mr. Bennet", "wife", "Mrs. Bennet", "ironic"],
+    "book_section": "Chapter 1",
+    "notes": "Should identify the relationship dynamic"
+  },
+  {
+    "id": 3,
+    "question": "Who is the wealthy gentleman that moves to Netherfield?",
+    "ground_truth_answer": "Mr. Bingley",
+    "relevant_keywords": ["Bingley", "Netherfield", "wealthy", "gentleman"],
+    "book_section": "Chapter 1",
+    "notes": "Clear factual question about plot"
+  },
+  {
+    "id": 4,
+    "question": "How many daughters do the Bennets have?",
+    "ground_truth_answer": "Five daughters",
+    "relevant_keywords": ["five", "daughters", "Bennet"],
+    "book_section": "Chapter 1",
+    "notes": "Simple factual question"
+  },
+  {
+    "id": 5,
+    "question": "What is the main concern of Mrs. Bennet?",
+    "ground_truth_answer": "Marrying off her daughters",
+    "relevant_keywords": ["Mrs. Bennet", "marriage", "daughters"],
+    "book_section": "Early chapters",
+    "notes": "Character motivation question"
+  },
+  {
+    "id": 6,
+    "question": "Where does Mr. Darcy first appear?",
+    "ground_truth_answer": "At the ball in Meryton",
+    "relevant_keywords": ["Darcy", "ball", "Meryton", "first"],
+    "book_section": "Chapter 3",
+    "notes": "Plot event question"
+  },
+  {
+    "id": 7,
+    "question": "What is Elizabeth's first impression of Mr. Darcy?",
+    "ground_truth_answer": "She finds him proud and disagreeable",
+    "relevant_keywords": ["Elizabeth", "Darcy", "proud", "impression"],
+    "book_section": "Chapter 3",
+    "notes": "Character impression question"
+  },
+  {
+    "id": 8,
+    "question": "Who is Jane Bennet's love interest?",
+    "ground_truth_answer": "Mr. Bingley",
+    "relevant_keywords": ["Jane", "Bingley", "love"],
+    "book_section": "Early chapters",
+    "notes": "Relationship question"
+  },
+  {
+    "id": 9,
+    "question": "What estate does Mr. Darcy own?",
+    "ground_truth_answer": "Pemberley",
+    "relevant_keywords": ["Darcy", "Pemberley", "estate"],
+    "book_section": "Mid-book",
+    "notes": "Factual detail question"
+  },
+  {
+    "id": 10,
+    "question": "Who does Elizabeth eventually marry?",
+    "ground_truth_answer": "Mr. Darcy",
+    "relevant_keywords": ["Elizabeth", "marry", "Darcy"],
+    "book_section": "Ending",
+    "notes": "Plot resolution question"
+  }
+]
