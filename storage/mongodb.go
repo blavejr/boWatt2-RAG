@@ -356,6 +356,86 @@ func (s *MongoStore) GetUniqueBookIDs(ctx context.Context) ([]string, error) {
 	return bookIDs, nil
 }
 
+// GetBooks retrieves a list of unique books
+func (s *MongoStore) GetBooks(ctx context.Context) ([]models.Book, error) {
+	pipeline := mongo.Pipeline{
+		bson.D{
+			{Key: "$group", Value: bson.D{
+				{Key: "_id", Value: "$book_id"},
+				{Key: "title", Value: bson.D{{Key: "$first", Value: "$metadata.book_title"}}},
+				{Key: "author", Value: bson.D{{Key: "$first", Value: "$metadata.book_author"}}},
+				{Key: "uploaded_at", Value: bson.D{{Key: "$min", Value: "$created_at"}}},
+			}},
+		},
+		bson.D{
+			{Key: "$addFields", Value: bson.D{
+				{Key: "id", Value: "$_id"},
+			}},
+		},
+		bson.D{
+			{Key: "$project", Value: bson.D{
+				{Key: "_id", Value: "$_id"},
+				{Key: "id", Value: 1},
+				{Key: "title", Value: 1},
+				{Key: "author", Value: 1},
+				{Key: "uploaded_at", Value: 1},
+			}},
+		},
+	}
+
+	cursor, err := s.collection.Aggregate(ctx, pipeline)
+	if err != nil {
+		return nil, fmt.Errorf("failed to aggregate books: %w", err)
+	}
+	defer cursor.Close(ctx)
+
+	var results []bson.M
+	if err := cursor.All(ctx, &results); err != nil {
+		return nil, fmt.Errorf("failed to decode books: %w", err)
+	}
+
+	books := make([]models.Book, 0, len(results))
+	for _, result := range results {
+		book := models.Book{
+			Title:      getString(result, "title"),
+			Author:     getString(result, "author"),
+			UploadedAt: getTime(result, "uploaded_at"),
+		}
+
+		// Get id from either "id" field or "_id" field
+		if id, ok := result["id"].(string); ok && id != "" {
+			book.ID = id
+		} else if id, ok := result["_id"].(string); ok && id != "" {
+			book.ID = id
+		}
+
+		books = append(books, book)
+	}
+
+	return books, nil
+}
+
+func getString(m bson.M, key string) string {
+	if val, ok := m[key]; ok {
+		if str, ok := val.(string); ok {
+			return str
+		}
+	}
+	return ""
+}
+
+func getTime(m bson.M, key string) time.Time {
+	if val, ok := m[key]; ok {
+		if t, ok := val.(primitive.DateTime); ok {
+			return t.Time()
+		}
+		if t, ok := val.(time.Time); ok {
+			return t
+		}
+	}
+	return time.Time{}
+}
+
 // helper to generate ObjectID
 func GenerateObjectID() primitive.ObjectID {
 	return primitive.NewObjectID()

@@ -181,6 +181,12 @@ func (rc *RAGController) QueryBook(c *gin.Context) {
 		return
 	}
 
+	// validate book_id
+	if req.BookID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "book_id is required"})
+		return
+	}
+
 	topK := req.TopK
 	if topK <= 0 {
 		topK = rc.config.TopK
@@ -231,4 +237,22 @@ func (rc *RAGController) QueryBook(c *gin.Context) {
 		Sources:          sources,
 		ProcessingTimeMs: processingTime.Milliseconds(),
 	})
+}
+
+func (rc *RAGController) GetBooks(c *gin.Context) {
+	log.Printf("Fetching list of books...")
+	ctx := context.Background()
+	books, err := rc.store.GetBooks(ctx)
+	if err != nil {
+		log.Printf("Failed to get books from store: %v", err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve books"})
+		return
+	}
+
+	if books == nil {
+		books = []models.Book{}
+	}
+
+	log.Printf("Successfully retrieved %d books", len(books))
+	c.JSON(http.StatusOK, books)
 }
